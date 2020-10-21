@@ -11,13 +11,15 @@ chrome_options = webdriver.ChromeOptions()
 browser = webdriver.Chrome(chrome_options=chrome_options)
 
 
-select_date_header = '2020-11-'  # 预约月份
-select_date_start = 2  # 开始日期
-select_date_end = 21  # 结束日期
+select_date_header = '2020-10-'  # 预约月份
+select_date_start = 22  # 开始日期
+select_date_end = 32  # 结束日期
+select_time_start = '13:00' #开始时间
+select_time_stop = '17:00'  #结束时间
 add_num = 20  # 加入预约个数
 
-groupname = '力学竞赛组'
-topic = '上海市大学生力学竞赛准备'
+groupname = '李铎大佬带飞组'
+topic = '李铎大佬手把手辅导菜鸡'
 
 
 def login():
@@ -39,13 +41,13 @@ def begin(n):
     try:
         book_url = 'http://studyroom.lib.sjtu.edu.cn/apply.asp'
         browser.get(book_url)
-        time.sleep(5)
+        time.sleep(2)
 
         browser.find_element_by_name('date_s').clear()
         browser.find_element_by_name('date_s').send_keys(
             select_date_header+str(n))
-        Select(browser.find_element_by_name('tstart')).select_by_value('17:30')
-        Select(browser.find_element_by_name('tend')).select_by_value('21:30')
+        Select(browser.find_element_by_name('tstart')).select_by_value(select_time_start)
+        Select(browser.find_element_by_name('tend')).select_by_value(select_time_stop)
         browser.find_element_by_class_name('fa-btn').click()
         sleep(1)
         # print(select_date_header+str(n))
@@ -132,6 +134,13 @@ def join_pack():
         print(id, pwd)
         join(id, pwd)
 
+
+def get():
+    for i in range(select_date_start, select_date_end,1):
+        begin(i)
+        time.sleep(2)
+        choose_room()
+        time.sleep(2)
 # def test():
 #     s = '等待加入！(密码:321321)'
 #     s = s[-7:]
@@ -141,15 +150,18 @@ def join_pack():
 
 
 if __name__ == '__main__':
-    login()
+    login() #登陆
+
+#以下功能自选其一取消注释即可
+    #1. 自动发起预约
+    # get()
+
+    #2. 获取申请密码用
     # get_pwd()
-    join_pack()
-    # for i in range(select_date_start, select_date_end,1):
-    #     begin(i)
-    #     time.sleep(2)
-    #     choose_room()
-    #     time.sleep(2)
-        # print(i)
+
+    #3. 自动加入申请
+    # join_pack()
+
     browser.close()
 
     # test()
